@@ -2,7 +2,8 @@
   (:use seesaw.core)
   (:use [chess etc pieces moves board check])  
   (require [clojure.tools.logging :as log]
-           [clj-logging-config.log4j :as log-conf]))
+           [clj-logging-config.log4j :as log-conf])
+  (:gen-class))
 
 (declare when-mouse-clicked)
 
