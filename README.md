@@ -1,13 +1,11 @@
 # chess
 
-A Clojure library designed to ... well, that part is up to you.
+A chess game in Clojure to help me get familiar with the language and libraries.  There's no AI.  
 
 ## Usage
 
-FIXME
-
 ## License
 
-Copyright © 2013 FIXME
+Copyright © 2013
 
 Distributed under the Eclipse Public License, the same as Clojure.
