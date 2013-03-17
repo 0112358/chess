@@ -1,10 +1,11 @@
 (ns chess.check
+  (require [clojure.tools.logging :as log])
   (:use [chess etc board moves]))
 
 (defn- is-check?
   [board indx king-index]
   (let [moves (gen-moves board indx)]
-    (println "is-check? indx=" indx ", king-index " king-index " moves " moves)
+    (log/info "is-check? indx=" indx ", king-index " king-index " moves " moves)
     (not (nil? (some #(= (:index %) king-index) moves)))))
         
 
@@ -18,7 +19,7 @@
   [board player-color other-player-color]
   (let [indices (all-piece-indices-for-color board player-color)            ; get all locations of player-color pieces
         king-index (:index (get-king-coords board other-player-color))]      ; get location of other player's king
-    (println "find-check-indices: indices=" indices)
+    (log/info "find-check-indices: indices=" indices)
     (find-indices-which-check board indices king-index)))
 
 (defn- is-checked?

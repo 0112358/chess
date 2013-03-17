@@ -76,4 +76,11 @@
         :when (pred item)]
     idx))
         
-  
+(defn rotate
+  [n coll]
+  (if (pos? n)
+    (concat (drop n coll) (take n coll))
+    (let [cnt (+ (count coll) n)
+          tail (take cnt coll)
+          head (drop cnt coll)]
+      (concat head tail))))  

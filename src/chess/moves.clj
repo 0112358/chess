@@ -1,4 +1,5 @@
 (ns chess.moves
+  (require [clojure.tools.logging :as log])
   (:use [chess etc pieces board]))
 
 (def rows 8)
@@ -32,7 +33,7 @@
   "Keep only items to which a piece can move to. ie empty spot or a piece of a diff color."
   [board n point-maps]
   (let [piece (get-piece board n)]
-    #_(println "filter-allowed-moves point-maps" point-maps)
+    (log/debug "filter-allowed-moves point-maps" point-maps)
     (filter #(diff-color? piece (get-piece board (:index %))) point-maps)))
 
 (defn- filter-seq-moves
@@ -107,7 +108,7 @@ Stop at first location where the color is diff including that one."
                            (= 1 row)))
                 (conj mm {:row (op new-row 1) :col col :type :straight :index (point->index (op new-row 1) col)})
                 mm)]
-    #_(println "pawn pmm: " pmm " mm: " mm " moves: " moves)
+    (log/debug "pawn pmm: " pmm " mm: " mm " moves: " moves)
    (filter-allowed-moves board n moves)))
 
 (defmethod gen-moves :Horse

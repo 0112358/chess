@@ -9,3 +9,13 @@
 
 
 
+(use 'seesaw.core)
+
+
+
+
+
+
+          
+
+                                        ; Generate 8 x 8 panels and put them on the board with different colors
