@@ -1,5 +1,6 @@
 (ns chess.ui
   (:use seesaw.core)
+  (:use seesaw.dev)
   (:use [chess etc pieces moves board check])  
   (require [clojure.tools.logging :as log]
            [clj-logging-config.log4j :as log-conf])
@@ -70,7 +71,6 @@ Returns a sequences of labels."
 (defn- update-square!
   "Update the lbl with data from the chess piece"
   [lbl piece]
-  (log/info "update-square! piece=" piece ", lbl=" lbl)
   (let [empty-px? (empty-piece? piece)
         text (if empty-px? "" (terse-str piece))
         color (if empty-px? :white (:color piece))]
@@ -85,15 +85,13 @@ Returns a sequences of labels."
   [board]
   (let [lbls (for [i (range (count board))]
                (select chess-grid-panel [(keyword (str "#" i))]))]
-    (log/debug "before calling map lbls " (count lbls) ", board " (count board))
-    (map #(update-square! % %2) lbls board)
-    #_(log/debug "after calling map in update-board!")))
+    (doseq [idx (range (count lbls))]
+      (update-square! (nth lbls idx) (nth board idx)))))
+
 
 (defn- apply-user-move
   []
-  (log/debug "in apply-user-move selected-index=" @selected-index ", dest-index=" @dest-index)
   (let [moves (gen-moves @chess-board @selected-index)]
-    (log/info "moves: " moves)
     (if (empty? moves)
       (update-msg-area "No valid moves for your selection.")
       (let [the-move (first (filter #(= (:index %) @dest-index) moves))]
@@ -105,11 +103,9 @@ Returns a sequences of labels."
                 check-status (check-status new-board player other-player)]
             (log/debug "the move is " the-move)
             (reset-chess-board! new-board)
-            (log/debug "reset the chess board")
-            (invoke-now (update-board! new-board))
-            (log/debug "updated the board")))))
+            (update-board! new-board)
     (reset-selected-index! -1)
-    (reset-dest-index! -1)))
+    (reset-dest-index! -1)))))))
           
             
 
@@ -151,6 +147,7 @@ Returns a sequences of labels."
 
 
 (defn -main [& args]
+  (seesaw.dev/debug!)
   (configure-logging)
   (log/info "Logging initialized")
   (invoke-later
